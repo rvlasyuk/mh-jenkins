@@ -1,10 +1,9 @@
 class springapp::deploy {
     
-#    service { 'springapp stopped':
-#        name => 'springapp'
-#        ensure => 'stopped',
-#        require => File['springapp.service'],
-#    }
+    exec { 'springapp stop service':
+        path    => ['/usr/bin', '/usr/sbin', '/bin'],
+        command => "service springapp stop",
+    }
 
     # get application artifact
     file { 'get_spring_artifact':
