@@ -1,0 +1,28 @@
+- job:
+    name: mh-build
+    project-type: pipeline
+    dsl: |
+          #!groovy
+            node('master') {
+            try {
+                    stage('checkout') {
+                    checkout([$class: 'GitSCM',
+                                branches: [[name: 'master']],
+                                doGenerateSubmoduleConfigurations: false,
+                                userRemoteConfigs: [[
+                                    url: 'https://github.com/GoogleCloudPlatform/getting-started-java.git'
+                                ]],
+                    ])
+                }
+                stage('build') {
+                  sh 'cd helloworld-springboot && mvn package'
+                }
+                stage('archiving') {
+                    archiveArtifacts artifacts: 'helloworld-springboot/target/helloworld-springboot-*-SNAPSHOT.jar', excludes: null
+                    sh 'mv helloworld-springboot/target/helloworld-springboot-*-SNAPSHOT.jar /vagrant/files/artifacts/helloworld-springboot-latest.jar'
+                }
+            } catch(err) {
+                throw err
+            }
+          }
+    sandbox: true

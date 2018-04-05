@@ -1,0 +1,12 @@
+[Unit]
+Description=SpringBoot Service
+
+[Service]
+User=spring
+Type=simple
+ExecStart=/usr/bin/java -jar bin/helloworld-springboot-latest.jar
+Restart=no
+WorkingDirectory=/opt/spring
+
+[Install]
+WantedBy=multi-user.target

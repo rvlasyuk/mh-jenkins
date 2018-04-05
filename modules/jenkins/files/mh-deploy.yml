@@ -1,0 +1,19 @@
+- job:
+    name: mh-deploy
+    project-type: pipeline
+    dsl: |
+          #!groovy
+            node {
+                try {
+                    
+                    stage('deploy') {
+                      sshagent (credentials: ['6b76a131-6ec5-4ae5-b7d4-4b3b1b6acfa7']) {
+                        sh "ssh -o StrictHostKeyChecking=no -l vagrant 192.168.20.5 sudo /opt/puppetlabs/bin/puppet apply --modulepath=/vagrant/modules /vagrant/manifests/springapp_deploy.pp"
+                        sh "ssh -o StrictHostKeyChecking=no -l vagrant 192.168.20.6 sudo /opt/puppetlabs/bin/puppet apply --modulepath=/vagrant/modules /vagrant/manifests/springapp_deploy.pp"
+                      }
+                    }
+                } catch(err) {
+                    throw err
+                }
+            }
+    sandbox: true

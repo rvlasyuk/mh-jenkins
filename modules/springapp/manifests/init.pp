@@ -1,0 +1,1 @@
+class {'springapp::install': }
