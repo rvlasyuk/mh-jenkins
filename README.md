@@ -30,12 +30,13 @@ Then run  `Deploy Job` [mh-deploy]. This job will deploy `helloworld-springboot-
 
 Open in your browser [URL] `http://localhost:8881` and you can see `Hello World!`.
 
-### Increase or decrease number of nodes.
+## Increase or decrease number of nodes.
 
 Unfortunately nodes autotedecting is absent in this version of code. So if you want to change the number of nodes:
 
 - Add or remove configuration for VM with name `springapp0N`. Each node should have it's own uniq IP address
-    
+###
+
     config.vm.define "springapp01" do |app|
     app.vm.provider "virtualbox" do |v|
       v.name = "springapp01"
@@ -77,6 +78,7 @@ Unfortunately nodes autotedecting is absent in this version of code. So if you w
 
 - Run provisioning again with a parameter
 
+###
     vagrant up --provision
 
 
