@@ -30,11 +30,29 @@ Then run  `Deploy Job` [mh-deploy]. This job will deploy `helloworld-springboot-
 
 Open in your browser [URL] `http://localhost:8881` and you can see `Hello World!`.
 
-## Changing nodes nubmer
+### Increase or decrease number of nodes.
 
 Unfortunately nodes autotedecting is absent in this version of code. So if you want to change the number of nodes:
 
-- Add or remove configuration for VM with name `springapp0N`. Each node should have a uniq IP address
+- Add or remove configuration for VM with name `springapp0N`. Each node should have it's own uniq IP address
+    
+    config.vm.define "springapp01" do |app|
+    app.vm.provider "virtualbox" do |v|
+      v.name = "springapp01"
+    end
+    #app.vm.network "forwarded_port", guest: 8080, host: 8888
+    app.vm.box = "puppetlabs/ubuntu-16.04-64-puppet"
+    app.vm.box_version = "1.0.0"
+    app.vm.hostname = 'springapp01'
+    app.vm.network :private_network, ip: "192.168.20.5"
+    app.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "modules/springapp/manifests"
+      puppet.module_path = "modules"
+      puppet.manifest_file = "init.pp"
+      puppet.options = "--verbose --debug"
+    end
+    end
+
 - Add or remove member's IP in nginx upstream config in file
 
 ### manifests/nginx.pp
